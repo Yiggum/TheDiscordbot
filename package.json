@@ -1,0 +1,25 @@
+{
+  "name": "thediscordbot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/app.js",
+  "type": "module",
+  "dependencies": {
+    "axios": "^0.24.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Yiggum/TheDiscordbot.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Yiggum/TheDiscordbot/issues"
+  },
+  "homepage": "https://github.com/Yiggum/TheDiscordbot#readme"
+}
