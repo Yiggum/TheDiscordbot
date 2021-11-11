@@ -3,22 +3,36 @@ import axios from 'axios'
 
 const url = "http://api.coincap.io/v2/assets/amp"
 
-// axios({
-//     method: 'post',
-//     url: '/login',
-//     data: {
-//       firstName: 'Finn',
-//       lastName: 'Williams'
-//     }
-//   });
+const x = 0
 
-axios.get(url).then(function (response) {
+function getRequest(){
+    axios.get(url).then(function (response) {
     // handle success
     console.log("wooho")
     console.log(response);
-  })
-  .catch(function (error) {
+    })
+    .catch(function (error) {
     // handle error
     console.log("ohshit")
     console.log(error);
-  })
+    })
+}
+
+do {
+    let myVar = setInterval(function(){ timer() }, 1000);
+
+    function timer() {
+    getRequest()
+    }
+    function stopFunction() {
+        clearInterval(myVar);
+    }
+ 
+ } while (x > 0);
+
+
+
+ 
+
+
+
