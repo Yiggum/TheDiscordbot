@@ -1,7 +1,7 @@
-import 'axios'
+import axios from 'axios'
 //const axios = require('axios')
 
-const url = "api.coincap.io/v2/assets/amp"
+const url = "http://api.coincap.io/v2/assets/amp"
 
 // axios({
 //     method: 'post',
@@ -12,4 +12,13 @@ const url = "api.coincap.io/v2/assets/amp"
 //     }
 //   });
 
-axios.get(url)
+axios.get(url).then(function (response) {
+    // handle success
+    console.log("wooho")
+    console.log(response);
+  })
+  .catch(function (error) {
+    // handle error
+    console.log("ohshit")
+    console.log(error);
+  })
