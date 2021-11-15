@@ -108,6 +108,7 @@ class PriceEntity {
 
 
 
+
 /*
 TODO make a rolling min average function
 Where after the first min it totals up currentPrices[0]-[60]
@@ -121,3 +122,4 @@ states whether increase or decrease
 //         }
 //     }
 // }
+
