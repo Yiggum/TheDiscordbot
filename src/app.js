@@ -19,10 +19,10 @@ let arrayOfPriceObjects = []
 
 function getRequest() {
     axios.get(url,{
-        headers: {
-            Authorization: 'Bearer ' + token    
-        }
-    }).then(function (response) {
+        headers: {Authorization: 'Bearer ' + token }
+      }
+    )
+    .then(function (response) {
         // handle success
         //console.log("wooho")
         //console.log(response.data.data)
