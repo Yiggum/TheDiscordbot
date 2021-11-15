@@ -33,13 +33,13 @@ function getRequest() {
 }
 // main loop for pricechecker
 do {
-    let myVar = setInterval(function () { timer() }, 1000);
+    let myVar = setInterval(function () { timer() }, 500);
 
     function timer() {
         getRequest()
         priceEntityMaker()
-        console.log(arrayOfPriceObjects)
         mainLoopTimer++
+        console.log(priceEntityObjects)
 
     }
     function stopFunction() {
@@ -73,19 +73,31 @@ function priceEntityMaker() {
             current59++
 
         }
-    } else {
-        console.log("It is not time")
+    } else if (!mainLoopTimer % 300){
+        if (currentPrices[0] < currentPrices[current59]) {
+            console.log("Increase")
+
+            priceEntityObjects.push(new PriceEntity("increase", currentPrices[current59], currentPrices[0], "5 MINS"))
+        } else {
+            console.log("decrease")
+
+            priceEntityObjects.push(new PriceEntity("decrease", currentPrices[current59], currentPrices[0], "5 MINS"))
+        }
+    }else {
+        console.log("1 min buffer")
     }
 }
 
 
 class PriceEntity {
-    constructor(upOrDown, currentPrice, priceOneMinuteAgo) {
+    constructor(upOrDown, currentPrice, priceOneMinuteAgo, interval) {
         this.upOrDown = upOrDown;
         this.currentPrice = currentPrice;
-        this.priceOneMinuteAgo = priceOneMinuteAgo;
+        this.previousPrice = priceOneMinuteAgo;
         this.percentageDifference = 100 * Math.abs((priceOneMinuteAgo - currentPrice) / ((priceOneMinuteAgo + currentPrice) / 2))
+        this.interval = interval
     }
+    
 }
 
 
