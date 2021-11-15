@@ -4,7 +4,7 @@ import dotenv from 'dotenv'
 
 const result = dotenv.config()
 console.log(result)
-const token = process.env.BARER_TOKEN
+const token = process.env.BEARER_TOKEN
 console.log(token)
 
 
@@ -15,23 +15,18 @@ let mainLoopTimer = 0
 let currentPrices = []
 let currentZero = 0
 let current59 = 59
-let arrayOfPriceObjects = []
+let priceEntityObjects = []
 
 function getRequest() {
-    axios.get(url,{
-        headers: {Authorization: 'Bearer ' + token }
-      }
+    axios.get(url, {
+        headers: { Authorization: 'Bearer ' + token }
+    }
     )
-    .then(function (response) {
-        // handle success
-        //console.log("wooho")
-        //console.log(response.data.data)
-        currentPrices.push(parseFloat(response.data.data.priceUsd))
-        //console.log(currentPrices);
-    })
+        .then(function (response) {
+            currentPrices.push(parseFloat(response.data.data.priceUsd))
+
+        })
         .catch(function (error) {
-            // handle error
-            //console.log("ohshit")
             console.log(error)
             currentPrices.push("error");
         })
@@ -42,7 +37,7 @@ do {
 
     function timer() {
         getRequest()
-        averageCheckerWithDefence()
+        priceEntityMaker()
         console.log(arrayOfPriceObjects)
         mainLoopTimer++
 
@@ -54,31 +49,26 @@ do {
 } while (x > 0);
 
 
-// console logs rolling average over the past min
-function rollingAverageChecker(x, y) {
-    // currentPrices[0]
-    // currentPrices[59]
-    var percDiff = 100 * Math.abs((x - y) / ((x + y) / 2));
-    console.log(percDiff)
-    if (currentPrices[currentZero] < currentPrices[current59]) {
-        console.log("Increase")
-        
-        arrayOfPriceObjects.push(new PriceEntity(percDiff, "increase"))
-    } else {
-        console.log("decrease")
-        
-        arrayOfPriceObjects.push(new PriceEntity(percDiff, "decrease"))
-    }
-}
+
+
 // if errors check 
-function averageCheckerWithDefence() {
+function priceEntityMaker() {
 
     if (mainLoopTimer > 60) {
         if (currentPrices[currentZero] === "error" || currentPrices[current59] === "error") {
             currentZero++
             current59++
         } else {
-            rollingAverageChecker(currentPrices[currentZero], currentPrices[current59])
+
+            if (currentPrices[currentZero] < currentPrices[current59]) {
+                console.log("Increase")
+
+                priceEntityObjects.push(new PriceEntity("increase", currentPrices[current59], currentPrices[currentZero]))
+            } else {
+                console.log("decrease")
+
+                priceEntityObjects.push(new PriceEntity("decrease", currentPrices[current59], currentPrices[currentZero]))
+            }
             currentZero++
             current59++
 
@@ -88,8 +78,38 @@ function averageCheckerWithDefence() {
     }
 }
 
+
+class PriceEntity {
+    constructor(upOrDown, currentPrice, priceOneMinuteAgo) {
+        this.upOrDown = upOrDown;
+        this.currentPrice = currentPrice;
+        this.priceOneMinuteAgo = priceOneMinuteAgo;
+        this.percentageDifference = 100 * Math.abs((priceOneMinuteAgo - currentPrice) / ((priceOneMinuteAgo + currentPrice) / 2))
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /*
-TODO make a rolling min average function 
+TODO make a rolling min average function
 Where after the first min it totals up currentPrices[0]-[60]
 states whether increase or decrease
 */
@@ -101,12 +121,3 @@ states whether increase or decrease
 //         }
 //     }
 // }
-
-
-class PriceEntity {
-    constructor(price, upOrDown) {
-        this.percentageDifference = price;
-        this.upOrDown = upOrDown;
-      }
-}
-
